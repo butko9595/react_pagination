@@ -3,22 +3,21 @@ import React from 'react';
 type Props = {
   total: number;
   perPage: number;
-  currentPage: number;
+  currentPage?: number; // optional
   onPageChange: (page: number) => void;
 };
 
 export const Pagination: React.FC<Props> = ({
   total,
   perPage,
-  currentPage,
+  currentPage = 1, // default value
   onPageChange,
 }) => {
   const totalPages = Math.ceil(total / perPage);
-
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
 
   const goTo = (page: number) => {
-    if (page !== currentPage && page >= 1 && page <= totalPages) {
+    if (page >= 1 && page <= totalPages && page !== currentPage) {
       onPageChange(page);
     }
   };
@@ -33,7 +32,6 @@ export const Pagination: React.FC<Props> = ({
       </p>
 
       <ul className="pagination">
-        {/* Prev */}
         <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
           <a
             data-cy="prevLink"
@@ -49,7 +47,6 @@ export const Pagination: React.FC<Props> = ({
           </a>
         </li>
 
-        {/* Pages */}
         {pages.map(page => (
           <li
             key={page}
@@ -69,7 +66,6 @@ export const Pagination: React.FC<Props> = ({
           </li>
         ))}
 
-        {/* Next */}
         <li
           className={`page-item ${
             currentPage === totalPages ? 'disabled' : ''
